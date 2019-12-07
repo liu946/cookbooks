@@ -1,0 +1,102 @@
+<script type="text/javascript">
+    function collection(contents) {
+      let pages = [];
+      let data = [];
+      for (let i = 0; i < contents.length; i++) {
+        e = contents[i];
+        switch (e.tagName) {
+          case 'H2':
+            data.push({"name": e.id, "elements": [e]});
+            break;
+          case 'HR':
+            pages.push(data);
+            data = [];
+            break;
+          default:
+            data[data.length - 1]["elements"].push(e)
+        }
+      }
+      if (data.length) {
+        pages.push(data)
+      }
+      return pages
+    }
+
+    function get_length(group) {
+      let ret = 0;
+      group["elements"].forEach(function (e) {
+        switch (e.tagName) {
+          case "H1":
+            ret += 49;
+            break;
+          case "H2":
+            ret += 30;
+            break;
+          case "UL":
+            for (let l of e.children) {
+              if (l.tagName === "LI") {ret += 26}
+            }
+            break;
+          case "BLOCKQUOTE":
+            ret += 30;
+            break;
+        }
+      });
+      return ret
+    }
+
+    function redistribution(data_arr) {
+      let columns = [[], [], []];
+      let length_sum = 0;
+      for (let group of data_arr) {
+        group['height'] = get_length(group);
+        length_sum += group['height'];
+      }
+      let insert_index = 0;
+      let record_lengh = 0;
+      for (let group of data_arr) {
+        if (record_lengh + (group['height'] / 2) > length_sum / 3 && insert_index < 2) {insert_index++; record_lengh = 0;}
+        columns[insert_index].push(group);
+        record_lengh += group['height'];
+        if (record_lengh > length_sum / 3 && insert_index < 2) {insert_index++; record_lengh = 0;}
+      }
+      return columns;
+    }
+
+    function deploy(parent, data) {
+      for (let e of parent.children) {parent.removeChild(e)}
+      for (let page_index in data) {
+        let page = document.createElement("div");
+        page.setAttribute("class", "grid-block");
+        for (let column_index in data[page_index]) {
+          let column = document.createElement("div");
+          column.setAttribute("class", "grid-lg-1-3");
+          for (let group of data[page_index][column_index]) {
+            for (let e of group["elements"]) {
+              column.appendChild(e);
+            }
+          }
+          page.appendChild(column);
+        }
+        parent.appendChild(page);
+        parent.appendChild(document.createElement("hr"));
+      }
+    }
+
+    function pop_title_into_column() {
+      const ct = document.getElementById('title-container');
+      const title_div = document.getElementById("site-title");
+      document.getElementById('container').removeChild(ct);
+      return {"name": "title", "elements": [title_div]}
+    }
+
+    let data = collection(document.getElementById('origin-content').children);
+    if ("{{ page.style }}" === "compact") {
+      data[0].unshift(pop_title_into_column());
+    }
+    for (let i = 0; i < data.length; i++) {
+      data[i] = redistribution(data[i])
+    }
+    deploy(document.getElementById('commands-container'), data);
+
+</script>
