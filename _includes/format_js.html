@@ -55,10 +55,13 @@
       let insert_index = 0;
       let record_lengh = 0;
       for (let group of data_arr) {
-        if (record_lengh + (group['height'] / 2) > length_sum / 3 && insert_index < 2) {insert_index++; record_lengh = 0;}
+        if (record_lengh + (group['height'] / 2) > length_sum / 3 && insert_index < 2 && columns[insert_index].length) {
+          insert_index++; record_lengh = 0;
+        }
         columns[insert_index].push(group);
         record_lengh += group['height'];
-        if (record_lengh > length_sum / 3 && insert_index < 2) {insert_index++; record_lengh = 0;}
+        if (record_lengh > length_sum / 3 && insert_index < 2) {insert_index++; record_lengh = 0;
+        }
       }
       return columns;
     }
@@ -79,7 +82,8 @@
           page.appendChild(column);
         }
         parent.appendChild(page);
-        parent.appendChild(document.createElement("hr"));
+        if (page_index < data.length - 1) 
+          parent.appendChild(document.createElement("hr"));
       }
     }
 
@@ -88,6 +92,18 @@
       const title_div = document.getElementById("site-title");
       document.getElementById('container').removeChild(ct);
       return {"name": "title", "elements": [title_div]}
+    }
+    function getHashCode(str,caseSensitive){
+        if(!caseSensitive){
+            str = str.toLowerCase();
+        }
+        // 1315423911=b'1001110011001111100011010100111'
+        var hash  =   1315423911,i,ch;
+        for (i = str.length - 1; i >= 0; i--) {
+            ch = str.charCodeAt(i);
+            hash ^= ((hash << 5) + ch + (hash >> 2));
+        }
+        return  (hash & 0x7FFFFFFF);
     }
 
     let data = collection(document.getElementById('origin-content').children);
@@ -98,5 +114,33 @@
       data[i] = redistribution(data[i])
     }
     deploy(document.getElementById('commands-container'), data);
+
+    var colors = {{ site.data.colors | jsonify }} ;
+    var page_title = "{{ page.title }}" ;
+    // colorfull title
+    {% if page.title == "CookBook" %}
+      // make title colorful
+      var title_html = ''
+      for (var i = 0; i < page_title.length; i++) {
+        title_html += `<span style='color: ${colors[i]}'>${page_title[i]}</span>  `
+      }
+      var dom_h1 = document.getElementById('site-title')
+      dom_h1.setAttribute('style', 'text-align: center;')
+      var dom_a = dom_h1.children[0]
+      dom_a.innerHTML = title_html
+      // make title colorful by its hash
+      for (let li of document.getElementsByTagName('LI')) {
+        li.children[0].setAttribute(
+          'style', 
+          `color: ${colors[getHashCode(li.textContent.trim(), false) % colors.length]}`
+          )
+      }
+    {% else %}
+      var dom_a = document.getElementById('site-title').children[0]
+      dom_a.setAttribute(
+          'style', 
+          `color: ${colors[getHashCode(dom_a.textContent.trim(), false) % colors.length]}`
+          )
+    {% endif %}
 
 </script>
