@@ -1,0 +1,6 @@
+{% assign image_files = site.static_files %}
+{% for myimage in image_files %}
+  {% if myimage.image and myimage.basename == include.title %}
+  <div class="icon-image" style="background-image: url({{ myimage.path | prepend: site.baseurl }});"></div>
+  {% endif %}
+{% endfor %}

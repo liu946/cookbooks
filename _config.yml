@@ -52,3 +52,14 @@ exclude:
   - vendor/gems/
   - vendor/ruby/
   - .idea
+
+collections:
+  cookbooks:
+    output: true
+    permalink: :path.html
+
+defaults:
+  - scope:
+      path: "assets/img"
+    values:
+      image: true

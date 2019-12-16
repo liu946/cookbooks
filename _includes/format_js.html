@@ -130,10 +130,33 @@
       dom_a.innerHTML = title_html
       // make title colorful by its hash
       for (let li of document.getElementsByTagName('LI')) {
-        li.children[0].setAttribute(
+        var par = li.children[0];
+        if (par.children.length && par.children[0].tagName === "P") {
+          li.children[0].children[0].setAttribute(
           'style', 
           `color: ${colors[getHashCode(li.textContent.trim(), false) % colors.length]}`
           )
+        } else {
+          li.children[0].setAttribute(
+          'style', 
+          `color: ${colors[getHashCode(li.textContent.trim(), false) % colors.length]}`
+          )
+          a = li.children[0];
+          href = a.getAttribute('href');
+          if (href) {
+            match_obj = href.match(/\/([A-Za-z0-9_]+)\.html$/)
+
+            {% assign image_files = site.static_files %}
+            {% for myimage in image_files %}
+            if (match_obj.length >= 2 && match_obj[1] == '{{ myimage.path | split: '/' | last | split: "." | first }}') {
+                li.children[0].innerHTML = `<div class="icon-image" style="background-image: url({{ myimage.path | prepend: site.baseurl }});"></div>`
+                              + li.children[0].innerHTML
+            }
+            {% endfor %}
+          }
+          
+        }
+        
       }
     {% else %}
       var dom_a = document.getElementById('site-title').children[0]

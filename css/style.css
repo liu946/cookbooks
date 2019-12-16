@@ -185,6 +185,16 @@ kbd, .highlighter-rouge{
     padding: 7px 7px
 }
 
+.icon-image {
+    height: 26px;
+    display: inline-block;
+    width: 26px;
+    margin: 0;
+    top: 4px;
+    position: relative; 
+    background-size: 100% 100%;
+}
+
 @media print {
     html, body {
         height: 90%

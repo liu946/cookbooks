@@ -3,10 +3,11 @@
 {% include head.html %}
 {% if page.title == "CookBook" %}
 <style type="text/css">
-    #commands-container > div > div > ul > li > a {
+    #commands-container > div > div > ul > li > a, p > a {
         font-size: 23px;
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         font-weight: 500;
+        color: inherit;
     }
 </style>
 {% endif %}
@@ -14,7 +15,13 @@
 <div id="container" class="container">
     <div id="title-container" class="grid-block">
         <div class="grid-1">
-            <h1 id="site-title"><a class="site-title" href="index.html">{{ page.title }}</a></h1>
+            <h1 id="site-title">
+                <a class="site-title" href="index.html">
+                    {% assign pic = page.path | split: '/' | last | replace: ".md", "" %}
+                    {% include title_icon.html title=pic %}
+                    {{ page.title }}
+                </a>
+            </h1>
         </div>
     </div> <!-- end row -->
 

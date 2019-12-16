@@ -1,7 +1,7 @@
 ---
 layout: cookbook
 title:  "Vim"
-categories: shell tool
+categories: Linux工具
 style: compact
 ---
 

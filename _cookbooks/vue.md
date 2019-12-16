@@ -1,7 +1,7 @@
 ---
 layout: cookbook
 title:  "Vue"
-categories: js
+categories: 前端
 style: compact
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: cookbook
 title:  "MC-WorldEdit"
-categories: game mc
+categories: 游戏
 style: compact
 ---
 
@@ -45,6 +45,7 @@ style: compact
 生成
 ---
 > 这些指令都是以你站的方块为准的。不需要选区。
+
 - `//cyl <方块> <半径> [高度]` 创建实心圆柱，空心使用`hcyl`指令。半径可以替换为`<东西半径>,<南北半径>`用以生成椭圆。
 - `//sphere [-r] <方块> <半径>` 生成球。空心使用`hsphere`指令。`-r`参数，会生成升高的球。你会踩在他内部的底上。
 - `//sphere <方块> <半径>,<半径>,<半径> [-r]` 椭球

@@ -1,7 +1,7 @@
 ---
 layout: cookbook
 title:  "Network"
-categories: shell
+categories: Linux-Shell
 style: compact
 ---
 

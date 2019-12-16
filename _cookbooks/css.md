@@ -1,7 +1,7 @@
 ---
 layout: cookbook
 title:  "CSS"
-categories: css
+categories: 前端
 style: compact
 ---
 

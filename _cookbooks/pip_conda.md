@@ -1,7 +1,7 @@
 ---
 layout: cookbook
 title:  "Pip Conda"
-categories: shell package
+categories: 包管理
 style: compact
 ---
 

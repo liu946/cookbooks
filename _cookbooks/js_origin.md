@@ -1,7 +1,7 @@
 ---
 layout: cookbook
 title:  "JS-前端原生"
-categories: js
+categories: 前端
 style: compact
 ---
 
